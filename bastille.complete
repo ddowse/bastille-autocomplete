@@ -1,0 +1,114 @@
+# 2021 (c) Daniel Dowse (dev@daemonbytes.net)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Optional completion mechanism
+# set complete=enhance
+# bindkey '\t' complete-word-fwd
+
+# Sample RFC1918 Network
+# 192.168.0.0/16
+# 172.16.0.0/12
+# 10.0.0.0/8
+
+set networks	= (192.168.0 172.16.0 10.0.0)
+
+# Common filesystem to mount inside target jail
+set fs = ("nullfs ro 0 0")
+
+# Bastille Jaildir
+set bastille_jailsdir = "/usr/local/bastille/jails"
+
+complete bastille	'N/cp/d/' \
+			#'p/4/d/' \
+			'n/cp/`bastille list jails`/' \
+		 	'N/{[0-9][0-9]}.*-*/`ifconfig -l`/' \
+			'n/{[0-9][0-9]}.*-*/$networks/' \
+			'N/{vnet,empty,thick}*/`bastille list releases`/' \
+			'n/{vnet,empty,thick,^name}/$names/' \
+			'N/create/`bastille list releases`/' \
+			'n/create/(vnet thick empty)/' \
+			#TODO: get more zfs dataset information \
+			'n@{set}@`set n = ( $COMMAND_LINE:x ); if ( $n[2] == "zfs") exit; if ( $n[2] == "config" ) sysctl -N security.jail.param | sed -E -e s%\\.\$%% -e s%security.jail.param.%%`'@= \
+			'n@{get}@`set n = ( $COMMAND_LINE:x ); if ( $n[2] == "zfs") echo "all"; if ( $n[2] == "config" ) cat $bastille_jailsdir/$n[3]/jail.conf | egrep -E "[;=]" | sed -E -e "s%=.*%%" -e "s%[\{\};]%%"`'@ \
+			'N/config/(get set)/' \
+			'n/config/`bastille list jail`/' \
+			'n/cmd/`jls name`/' \
+			'N/console/u/' \
+			'n/console/`jls name`/' \
+			'n/convert/`bastille list jail`/' \
+			'n/clone/`bastille list jails`/ ' \
+			'n/destroy/x:Please enter all commands manually - no completion available./' \
+			'N/edit/(fstab rctl.conf)/' \
+			'n/edit/`bastille list jail`/' \
+			'N@*/*@$fs@' \
+			'n@*/*@d@' \
+			'N/mount/d/' \
+			'n/mount/`bastille list jail`/' \
+			'N/umount/d/' \
+			'n/umount/`bastille list jail`/' \
+			'n/list/(release template jail container log limit import export backup)/' \
+			'n/limits/`bastille list jail`/' \
+			'n/import/f/' \
+			'n/htop/`jls name`/' \
+			'n/stop/`jls name`/' \
+			'n/start/`bastille list jails`/' \
+			'N/{save,txz}/d/' \
+			'N/export/(--save --txz)/' \
+			'n/export/`bastille list jails`/' \
+			'N/pkg/(add alias annotate audit autoremove backup check clean config \
+			create delete fetch help info install lock plugins query register \
+			remove repo rquery search set ssh shell shlib stats unlock update \
+			updating upgrade version which)/' \
+			'n/pkg/`jls name`/' \
+			'n/{tcp,udp}/x:HOST PORT -> JAIL PORT e.g: 80 8080 /' \
+			'N/rdr/(clear list tcp udp)/' \
+			'n/rdr/`bastille list jail`/' \
+			'N/rename/x:Enter new name now/' \
+			'n/rename/`bastille list jail`/' \
+			'n/restart/`jls name`/' \
+			'N/service/x:Hint: Run `bastille cmd $TARGET service -e` to check enabled services/' \
+			'n/service/`jls name`/' \
+			'N/sysrc/x:Hint: Run `bastille cmd $TARGET sysrc -Nav` to see what is available/' \
+			'n/sysrc/`bastille list jail`/' \
+			'N/template/`bastille list template/' \
+			'n/template/`jls name`/' \
+			'n/update/(release container)/' \
+			'N/upgrade/x:Enter new release - See help for more options/' \
+			'n/upgrade/`bastille list releases`/' \
+			'n/top/`jls name`/' \
+			'n/verify/`bastille list release; bastille list templates`/' \
+			'n/{snap}/`zfs list -t snap`/' \
+			'N/zfs/(get set snap)/' \
+			'n/zfs/`bastille list jail`/' \
+		        'p/1/(cmd clone config console \
+			convert cp create destroy edit export \
+			help htop import limits list mount pkg \
+			rdr rename restart service start stop \
+			sysrc template top umount update upgrade \
+			verify zfs)/' \
+			'c/*/x:Completion list end. Press [Enter] to run command/'
