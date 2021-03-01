@@ -5,7 +5,7 @@ tcsh autocompletion for BastilleBSD
 
 ```bash
 git clone https://github.com/ddowse/bastille-autocomplete.git
-source bastille.complete 
+source bastille-autocomplete/bastille.complete 
 ```
 or
 
