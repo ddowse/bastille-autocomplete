@@ -95,7 +95,7 @@ complete bastille	'N/cp/d/' \
 			'n/service/`jls name`/' \
 			'N/sysrc/x:Hint: Run `bastille cmd $TARGET sysrc -Nav` to see what is available/' \
 			'n/sysrc/`bastille list jail`/' \
-			'N/template/x:Enter URL or visit https://gitlab.com/bastillebsd-templates/' \
+			'N@template@x:Enter URL or visit https://gitlab.com/bastillebsd-templates@' \
 			'n/template/`jls name`/' \
 			'n/update/(release container)/' \
 			'N/upgrade/x:Enter new release - See help for more options/' \
