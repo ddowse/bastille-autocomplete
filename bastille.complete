@@ -80,11 +80,11 @@ complete bastille	'N/cp/d/' \
 			'N/{save,txz}/d/' \
 			'N/export/(--save --txz)/' \
 			'n/export/`bastille list jails`/' \
+			'n/pkg/`jls name`/' \
 			'N/pkg/(add alias annotate audit autoremove backup check clean config \
 			create delete fetch help info install lock plugins query register \
 			remove repo rquery search set ssh shell shlib stats unlock update \
 			updating upgrade version which)/' \
-			'n/pkg/`jls name`/' \
 			'n/{tcp,udp}/x:HOST PORT -> JAIL PORT e.g: 80 8080 /' \
 			'N/rdr/(clear list tcp udp)/' \
 			'n/rdr/`bastille list jail`/' \
