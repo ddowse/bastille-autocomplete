@@ -1,7 +1,9 @@
 # bastille-autocomplete
-tcsh autocompletion for BastilleBSD 
+tcsh autocompletion for BastilleBSD for almost all commands.   
 
-## installation
+May contains bugs
+
+## Installation
 
 ```bash
 git clone https://github.com/ddowse/bastille-autocomplete.git
