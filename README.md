@@ -14,7 +14,4 @@ fetch https://raw.githubusercontent.com/ddowse/bastille-autocomplete/main/bastil
 source bastille.complete 
 ```
 
-![demo.gif](demo.gif)
-
-
 Please report bugs. Thanks and enjoy.
